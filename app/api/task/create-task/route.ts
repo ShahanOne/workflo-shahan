@@ -11,8 +11,10 @@ if (!isConnected) {
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const { userId, title, status, priority, deadline, description } = body[0];
+  const { userId, title, status, priority, deadline, description } = body;
+  
   try {
+
     const newTask = new Task({
       title,
       status,

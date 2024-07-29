@@ -11,7 +11,7 @@ if (!isConnected) {
 
 export async function POST(req:Request) {
   const body = await req.json();
-  const { userId } = body[0];
+  const { userId } = body;
   try {
     const foundUser = await User.findOne({ _id: userId })
       .populate('tasks')

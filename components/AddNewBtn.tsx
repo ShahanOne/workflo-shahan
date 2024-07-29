@@ -9,7 +9,7 @@ const AddNewBtn: React.FC<AddNewBtnProps> = ({ status, handleAddTask }) => {
   return (
     <button
       onClick={() => handleAddTask(status)}
-      className="flex items-center justify-between p-2 rounded-lg bg-gradient-to-t from-[#202020] to-[#393939]  text-[#e3e1e1]"
+      className="flex items-center justify-between px-2 py-1 rounded-lg bg-gradient-to-t from-[#202020] to-[#393939]  text-[#e3e1e1]"
     >
       <span>Add new</span>
       <span className="text-2xl">+</span>

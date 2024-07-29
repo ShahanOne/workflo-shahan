@@ -1,5 +1,6 @@
 import React from 'react';
 import formatDate from '../lib/functions/formatDate';
+import Image from 'next/image';
 
 interface TaskCardProps {
   title: string;
@@ -20,21 +21,29 @@ const TaskCard: React.FC<TaskCardProps> = ({
 
   if (priority === 'urgent') {
     priorityColor = '#ff6b6b';
-  } else if (status === 'medium') {
+  } else if (priority === 'medium') {
     priorityColor = '#ffa235';
   } else {
     priorityColor = '#10cc5a';
   }
   return (
     <div className="bg-[#f9f9f9] rounded-lg p-2">
-      <p className="text-[#6a6a6a] font-bold">{title}</p>
-      <p className="text-[#797979] text-sm">{description}</p>
+      <p className="text-[#6a6a6a] font-semibold">{title}</p>
+      <p className="text-[#797979] my-2 text-sm">{description}</p>
       <button
-        className={`bg-[${priorityColor}] rounded-lg px-2 text-white py-1`}
+        style={{ backgroundColor: priorityColor }}
+        className="rounded-lg px-2 text-white text-sm py-1"
       >
         {priority}
       </button>
-      <p className="text-[#6a6a6a] font-bold">{formatDate(deadline)}</p>
+      <div className="text-[#6a6a6a] my-2 font-semibold flex gap-2">
+        {' '}
+        <div className="flex items-center">
+          {' '}
+          <Image src={'/clock.png'} alt="clock" width={20} height={20} />
+        </div>
+        {formatDate(deadline)}
+      </div>
       <p className="text-[#797979] text-sm">1 hr ago</p>
     </div>
   );

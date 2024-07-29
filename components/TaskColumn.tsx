@@ -1,9 +1,11 @@
+import Image from 'next/image';
 import AddNewBtn from './AddNewBtn';
 import TaskCard from './TaskCard';
 
 interface TaskColumnProps {
   title: string;
   tasks: Task[];
+  status: string;
   handleAddTask: (status: string) => void;
 }
 
@@ -19,12 +21,16 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
   title,
   tasks,
   handleAddTask,
+  status,
 }) => {
   return (
-    <div className="flex flex-col">
-      <div className="flex justify-between">
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-between items-center mb-2">
         <p>{title}</p>
-        <i></i>
+        <div>
+          {' '}
+          <Image src={'/list.png'} alt="list" width={20} height={20} />
+        </div>
       </div>
       {tasks?.map((task, index) => (
         <TaskCard
@@ -36,10 +42,7 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
           deadline={task.deadline}
         />
       ))}
-      <AddNewBtn
-        status={tasks && tasks[0]?.status}
-        handleAddTask={handleAddTask}
-      />
+      <AddNewBtn status={status} handleAddTask={handleAddTask} />
     </div>
   );
 };
