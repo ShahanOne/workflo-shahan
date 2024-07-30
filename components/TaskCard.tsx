@@ -50,7 +50,11 @@ const TaskCard: React.FC<TaskCardProps> = ({
             <div className="flex items-center">
               <Image src={'/clock.png'} alt="clock" width={20} height={20} />
             </div>
-            {formatDate(deadline)}
+            {deadline ? (
+              formatDate(deadline)
+            ) : (
+              <i className="font-normal">no deadline</i>
+            )}
           </div>
           <p className="text-[#797979] text-sm">just now</p>
         </div>
@@ -60,24 +64,3 @@ const TaskCard: React.FC<TaskCardProps> = ({
 };
 
 export default TaskCard;
-{
-  /* <div className="bg-[#f9f9f9] border-[#bab9b9] border-[0.5px] rounded-lg px-2 py-3">
-  <p className="text-[#6a6a6a] font-semibold">{title}</p>
-  <p className="text-[#797979] my-3 text-sm">{description}</p>
-  <button
-    style={{ backgroundColor: priorityColor }}
-    className="rounded-lg px-2 text-white text-sm py-1"
-  >
-    {priority}
-  </button>
-  <div className="text-[#6a6a6a] text-sm my-3 font-semibold flex gap-2">
-    {' '}
-    <div className="flex items-center">
-      {' '}
-      <Image src={'/clock.png'} alt="clock" width={20} height={20} />
-    </div>
-    {formatDate(deadline)}
-  </div>
-  <p className="text-[#797979] text-sm">just now</p>
-</div>; */
-}

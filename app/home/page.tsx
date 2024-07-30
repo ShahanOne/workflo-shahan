@@ -105,6 +105,32 @@ export default function Home() {
     router.push('/login');
   };
 
+  const updateTask = async (taskId: string, newStatus: string) => {
+    try {
+      const res = await fetch('/api/task/update-status', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          taskId,
+          newStatus,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.task) {
+            console.log('Task status updated successfully');
+          } else {
+            console.error('Error updating task status:', data.error);
+          }
+        });
+    } catch (err) {
+      console.log(err);
+      toast.error('Error updating status');
+    }
+  };
+
   const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
 
@@ -140,15 +166,24 @@ export default function Home() {
         ? tasksInColumn.find((t) => t._id === task._id) || task
         : task
     );
-    // console.log(finalTasks);
 
+    const updatedTask = {
+      ...draggedTask,
+      status: destination.droppableId,
+    };
+
+    updateTask(updatedTask._id, updatedTask.status); //upadting in backend
     setTasks(finalTasks);
   };
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="flex text-[#555555]">
-        <Navbar logout={logout} username={user?.username} />{' '}
+        <Navbar
+          logout={logout}
+          openTaskForm={() => setOpenForm(true)}
+          username={user?.username}
+        />{' '}
         <div className="bg-[#f7f7f7] px-4 py-8">
           <div className="flex justify-between">
             <p className="text-3xl text-black font-semibold">
@@ -252,7 +287,10 @@ export default function Home() {
                   />
                 </>
               </button>
-              <button className="bg-gradient-to-b from-[#4C38C2] to-[#2F2188] text-white px-2 py-1 rounded-lg shadow-sm shadow-[#4C38C2] transition duration-300">
+              <button
+                onClick={() => setOpenForm(true)}
+                className="bg-gradient-to-b from-[#4C38C2] to-[#2F2188] text-white px-2 py-1 rounded-lg shadow-sm shadow-[#4C38C2] transition duration-300"
+              >
                 Create new
                 <span className="bg-white text-[#4C38C2] rounded-full mx-1 px-[0.25rem]">
                   +

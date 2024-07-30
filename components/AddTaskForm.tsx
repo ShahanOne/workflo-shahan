@@ -60,7 +60,7 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({
           />
         </div>
         <div className="mb-4 flex items-baseline gap-2">
-          <label className="flex gap-2 items-center    mb-2">
+          <label className="flex gap-2 items-center  mb-2">
             <div>
               <Image
                 className="cursor-pointer"
@@ -104,7 +104,6 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({
             value={priority}
             onChange={(e) => setPriority(e.target.value)}
             className=" w-full py-2 px-3 focus:outline-none "
-            required
           >
             <option value="" disabled selected>
               Not selected
@@ -132,7 +131,6 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({
             value={deadline}
             onChange={(e) => setDeadline(e.target.value)}
             className=" w-full py-2 px-3 focus:outline-none "
-            required
           />
         </div>
         <div className="mb-4 flex items-baseline gap-2">
@@ -154,8 +152,7 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({
             className=" w-full py-2 px-3 focus:outline-none "
             placeholder="Enter description"
             rows={3}
-            required
-          ></textarea>
+          />
         </div>
         <div className="flex justify-end">
           <button

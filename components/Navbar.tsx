@@ -4,8 +4,9 @@ import React from 'react';
 interface NavProps {
   username: string | undefined;
   logout: () => void;
+  openTaskForm: () => void;
 }
-const Navbar: React.FC<NavProps> = ({ username, logout }) => {
+const Navbar: React.FC<NavProps> = ({ username, logout, openTaskForm }) => {
   return (
     <div className="w-[40%] text-[#555555] px-4 h-screen bg-[#ffffff]  flex flex-col relative">
       <div className="flex items-center gap-2  pt-5">
@@ -104,7 +105,10 @@ const Navbar: React.FC<NavProps> = ({ username, logout }) => {
           </ul>
         </div>
         <div className=" py-4">
-          <button className="w-full bg-gradient-to-b from-[#4C38C2] to-[#2F2188] text-white py-2 rounded-lg shadow-sm shadow-[#4C38C2] transition duration-300">
+          <button
+            onClick={openTaskForm}
+            className="w-full bg-gradient-to-b from-[#4C38C2] to-[#2F2188] text-white py-2 rounded-lg shadow-sm shadow-[#4C38C2] transition duration-300"
+          >
             Create new task{' '}
             <span className="bg-white text-[#4C38C2] rounded-full px-[0.25rem]">
               +
