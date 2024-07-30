@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Workflo',
+  title: 'Workflo Shahan',
   description: 'Workflo by Shahan',
 };
 
@@ -18,6 +18,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/task.ico" />
+      </head>
       <body className={inter.className}>
         <ToastContainer />
         {children}
