@@ -24,8 +24,8 @@ const AuthForm: React.FC<AuthFormProps> = ({
   const router = useRouter();
 
   return (
-    <div className="flex flex-col w-[35%] gap-4 bg-gradient-to-b from-[#f7f7f7] to-[#f0f0f0] justify-center rounded-lg shadow px-8 py-12">
-      <p className="text-4xl">
+    <div className="flex flex-col md:w-[35%] w-[90%] gap-4 bg-gradient-to-b from-[#f7f7f7] to-[#f0f0f0] justify-center rounded-lg shadow px-8 py-12">
+      <p className="md:text-4xl text-2xl">
         Welcome to <span className="text-[#4634ac]">Workflo</span>!
       </p>
       {formType === 'register' && (
