@@ -1,23 +1,26 @@
 import React from 'react';
 import formatDate from '../lib/functions/formatDate';
 import Image from 'next/image';
-
+import { Draggable } from '@hello-pangea/dnd';
 interface TaskCardProps {
+  _id: string;
   title: string;
   status: string;
   priority: 'urgent' | 'medium' | 'low';
   deadline: Date;
   description: string;
+  index: number;
 }
 
 const TaskCard: React.FC<TaskCardProps> = ({
+  _id,
   title,
-  status,
   priority,
   deadline,
   description,
+  index,
 }) => {
-  let priorityColor;
+  let priorityColor: string;
 
   if (priority === 'urgent') {
     priorityColor = '#ff6b6b';
@@ -27,26 +30,54 @@ const TaskCard: React.FC<TaskCardProps> = ({
     priorityColor = '#10cc5a';
   }
   return (
-    <div className="bg-[#f9f9f9] border-[#bab9b9] border-[0.5px] rounded-lg px-2 py-3">
-      <p className="text-[#6a6a6a] font-semibold">{title}</p>
-      <p className="text-[#797979] my-3 text-sm">{description}</p>
-      <button
-        style={{ backgroundColor: priorityColor }}
-        className="rounded-lg px-2 text-white text-sm py-1"
-      >
-        {priority}
-      </button>
-      <div className="text-[#6a6a6a] text-sm my-3 font-semibold flex gap-2">
-        {' '}
-        <div className="flex items-center">
-          {' '}
-          <Image src={'/clock.png'} alt="clock" width={20} height={20} />
+    <Draggable draggableId={_id} index={index}>
+      {(provided) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          className="bg-[#f9f9f9] border-[#bab9b9] border-[0.5px] rounded-lg px-2 py-3"
+        >
+          <p className="text-[#6a6a6a] font-semibold">{title}</p>
+          <p className="text-[#797979] my-3 text-sm">{description}</p>
+          <button
+            style={{ backgroundColor: priorityColor }}
+            className="rounded-lg px-2 text-white text-sm py-1"
+          >
+            {priority}
+          </button>
+          <div className="text-[#6a6a6a] text-sm my-3 font-semibold flex gap-2">
+            <div className="flex items-center">
+              <Image src={'/clock.png'} alt="clock" width={20} height={20} />
+            </div>
+            {formatDate(deadline)}
+          </div>
+          <p className="text-[#797979] text-sm">just now</p>
         </div>
-        {formatDate(deadline)}
-      </div>
-      <p className="text-[#797979] text-sm">just now</p>
-    </div>
+      )}
+    </Draggable>
   );
 };
 
 export default TaskCard;
+{
+  /* <div className="bg-[#f9f9f9] border-[#bab9b9] border-[0.5px] rounded-lg px-2 py-3">
+  <p className="text-[#6a6a6a] font-semibold">{title}</p>
+  <p className="text-[#797979] my-3 text-sm">{description}</p>
+  <button
+    style={{ backgroundColor: priorityColor }}
+    className="rounded-lg px-2 text-white text-sm py-1"
+  >
+    {priority}
+  </button>
+  <div className="text-[#6a6a6a] text-sm my-3 font-semibold flex gap-2">
+    {' '}
+    <div className="flex items-center">
+      {' '}
+      <Image src={'/clock.png'} alt="clock" width={20} height={20} />
+    </div>
+    {formatDate(deadline)}
+  </div>
+  <p className="text-[#797979] text-sm">just now</p>
+</div>; */
+}

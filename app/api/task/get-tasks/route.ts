@@ -14,7 +14,7 @@ export async function POST(req:Request) {
   const { userId } = body;
   try {
     const foundUser = await User.findOne({ _id: userId })
-      .populate('tasks')
+      .populate({path: 'tasks',model:Task})
       .exec();
 
     if (!foundUser) {

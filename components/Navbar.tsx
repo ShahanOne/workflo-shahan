@@ -7,7 +7,7 @@ interface NavProps {
 }
 const Navbar: React.FC<NavProps> = ({ username, logout }) => {
   return (
-    <div className="w-[40%] text-[#555555] px-4 h-screen bg-[#ffffff] shadow-md flex flex-col relative">
+    <div className="w-[40%] text-[#555555] px-4 h-screen bg-[#ffffff]  flex flex-col relative">
       <div className="flex items-center gap-2  pt-5">
         <div className="rounded-full border border-blue-600 p-2">
           <Image
