@@ -185,12 +185,12 @@ export default function Home() {
           username={user?.username}
         />{' '}
         <div className="bg-[#f7f7f7] px-4 py-8">
-          <div className="flex justify-between">
-            <p className="text-3xl text-black font-semibold">
+          <div className="flex justify-between gap-2">
+            <p className="md:text-3xl text-xl text-black font-semibold">
               Good Morning, {user?.username}!
             </p>
             <div className="flex items-center gap-2">
-              <p>Help & feedback</p>
+              <p className="md:block hidden">Help & feedback</p>
               <div>
                 {' '}
                 <Image
@@ -202,7 +202,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid md:grid-cols-3 grid-cols-1 md:gap-2">
             <NoteCard
               title={'Introducing tags'}
               content={
@@ -225,7 +225,7 @@ export default function Home() {
               icon={'/3.png'}
             />
           </div>
-          <div className="flex justify-between text-sm items-center gap-4 py-4">
+          <div className="flex md:flex-row flex-col justify-between text-sm items-center gap-4 py-4">
             <div className="flex items-center border rounded-lg bg-white px-2 py-1">
               <input
                 type="text"
@@ -289,7 +289,7 @@ export default function Home() {
               </button>
               <button
                 onClick={() => setOpenForm(true)}
-                className="bg-gradient-to-b from-[#4C38C2] to-[#2F2188] text-white px-2 py-1 rounded-lg shadow-sm shadow-[#4C38C2] transition duration-300"
+                className="bg-gradient-to-b md:inline-block hidden from-[#4C38C2] to-[#2F2188] text-white px-2 py-1 rounded-lg shadow-sm shadow-[#4C38C2] transition duration-300"
               >
                 Create new
                 <span className="bg-white text-[#4C38C2] rounded-full mx-1 px-[0.25rem]">
@@ -298,7 +298,7 @@ export default function Home() {
               </button>
             </div>
           </div>
-          <div className="tasks_div bg-[#ffffff] min-h-[30rem] rounded-lg grid grid-cols-4 gap-2 p-2">
+          <div className="tasks_div bg-[#ffffff] min-h-[30rem] rounded-lg grid md:grid-cols-4 grid-cols-1 gap-2 p-2">
             {['to-do', 'in-progress', 'under-review', 'finished'].map(
               (status, index) => (
                 <TaskColumn

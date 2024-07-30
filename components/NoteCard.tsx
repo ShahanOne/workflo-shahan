@@ -8,7 +8,7 @@ interface NoteCardProps {
 }
 const NoteCard: React.FC<NoteCardProps> = ({ icon, title, content }) => {
   return (
-    <div className="flex gap-2 text-sm rounded-lg my-4 p-2 bg-[#ffffff]">
+    <div className="flex gap-2 text-sm rounded-lg md:my-4 my-2 p-2 bg-[#ffffff]">
       <div className="flex items-center">
         {' '}
         <Image src={icon} alt="icon" width={120} height={100} />
