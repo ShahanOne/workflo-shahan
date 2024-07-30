@@ -20,6 +20,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
   const [fullName, setFullName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [clicked, setClicked] = useState(false);
 
   const router = useRouter();
 
@@ -51,14 +52,17 @@ const AuthForm: React.FC<AuthFormProps> = ({
       />
 
       <button
-        onClick={() =>
+        onClick={() => {
+          setClicked(true);
           formType === 'login'
             ? handleAuthentication('', email, password)
-            : handleAuthentication(fullName, email, password)
-        }
+            : handleAuthentication(fullName, email, password);
+        }}
         className="bg-gradient-to-t from-[#7d6fd1] to-[#877dcc]  p-2 text-white rounded-lg "
       >
-        {formType === 'login' ? 'Login' : 'Sign up'}
+        <p className={clicked ? 'animate-pulse' : ''}>
+          {formType === 'login' ? 'Login' : 'Sign up'}
+        </p>{' '}
       </button>
       <p className="text-sm">
         {formType === 'login' ? "Don't" : 'Already'} have an account?{' '}

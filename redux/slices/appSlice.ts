@@ -57,8 +57,12 @@ const appSlice = createSlice({
     addTask: (state, action: PayloadAction<Task>) => {
       state.tasks.push(action.payload);
     },  
+    setUser:(state,action)=>{
+      state.user =action.payload
+    },
       clearUser: (state) => {
       state.user = null;
+      state.tasks= []
     },
   },
   extraReducers: (builder) => {
@@ -78,5 +82,5 @@ const appSlice = createSlice({
   },
 });
 
-export const { addTask, updateTaskStatus,clearUser } = appSlice.actions;
+export const { addTask, updateTaskStatus,setUser,clearUser } = appSlice.actions;
 export default appSlice.reducer;
