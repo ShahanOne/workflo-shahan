@@ -9,6 +9,16 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
+
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  fetchData,
+  addTask,
+  updateTaskStatus,
+  clearUser,
+} from '@/redux/slices/appSlice';
+import { AppDispatch, RootState } from '@/redux/store';
+
 interface Task {
   _id: string;
   title: string;
@@ -17,13 +27,8 @@ interface Task {
   priority: 'urgent' | 'medium' | 'low';
   deadline: Date;
 }
-interface User {
-  username: string;
-}
 
 export default function Home() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [user, setUser] = useState<User>();
   const [openForm, setOpenForm] = useState(false);
   const [columnStatus, setColumnStatus] = useState('');
 
@@ -37,38 +42,20 @@ export default function Home() {
   useEffect(() => {
     if (!userId) {
       router.push('/register');
-    } else {
-      router.push('/home');
     }
   }, [router, userId]);
 
+  const dispatch = useDispatch<AppDispatch>();
+  const tasks = useSelector((state: RootState) => state.app.tasks);
+  const taskStatus = useSelector((state: RootState) => state.app.status);
+  const user = useSelector((state: RootState) => state.app.user);
+
   useEffect(() => {
-    const getTasks = async () => {
-      const res = await fetch('/api/task/get-tasks', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setUser(data?.user);
-          setTasks(data?.tasks);
-        });
-    };
-
-    getTasks();
-  }, []);
-
-  // const todoTasks = tasks?.filter((task) => task.status === 'to-do');
-  // const inProgressTasks = tasks?.filter(
-  //   (task) => task.status === 'in-progress'
-  // );
-  // const underReviewTasks = tasks?.filter(
-  //   (task) => task.status === 'under-review'
-  // );
-  // const finishedTasks = tasks?.filter((task) => task.status === 'finished');
+    const userId = localStorage.getItem('__uid');
+    if (taskStatus === 'idle' && userId) {
+      dispatch(fetchData(userId));
+    }
+  }, [taskStatus, dispatch]);
 
   const addNewTask = async (newTask: object) => {
     try {
@@ -82,7 +69,7 @@ export default function Home() {
         .then((res) => res.json())
         .then((data) => {
           if (data.task) {
-            setTasks((prev) => [...prev, data.task]);
+            dispatch(addTask(data.task)); //redux
             setOpenForm(false);
 
             toast.success('Task created successfully');
@@ -93,16 +80,6 @@ export default function Home() {
     } catch (error) {
       console.error('Error:', error);
     }
-  };
-
-  const openTaskForm = (status: string) => {
-    setColumnStatus(status);
-    setOpenForm(true);
-  };
-
-  const logout = () => {
-    localStorage.removeItem('__uid');
-    router.push('/login');
   };
 
   const updateTask = async (taskId: string, newStatus: string) => {
@@ -131,6 +108,7 @@ export default function Home() {
     }
   };
 
+  // dragging
   const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
 
@@ -173,7 +151,18 @@ export default function Home() {
     };
 
     updateTask(updatedTask._id, updatedTask.status); //upadting in backend
-    setTasks(finalTasks);
+    dispatch(updateTaskStatus(finalTasks));
+  };
+
+  const openTaskForm = (status: string) => {
+    setColumnStatus(status);
+    setOpenForm(true);
+  };
+
+  const logout = () => {
+    dispatch(clearUser());
+    localStorage.removeItem('__uid');
+    router.push('/login');
   };
 
   return (
@@ -185,12 +174,13 @@ export default function Home() {
           username={user?.username}
         />{' '}
         <div className="bg-[#f7f7f7] px-4 py-8">
-          <div className="flex justify-between gap-2">
+          <div className="flex items-center justify-between gap-2">
             <p className="md:text-3xl text-xl text-black font-semibold">
               Good Morning, {user?.username}!
             </p>
-            <div className="flex items-center gap-2">
-              <p className="md:block hidden">Help & feedback</p>
+            {/* desktop */}
+            <div className="md:flex hidden items-center gap-2">
+              <p className="">Help & feedback</p>
               <div>
                 {' '}
                 <Image
@@ -201,6 +191,13 @@ export default function Home() {
                 />
               </div>
             </div>
+            {/* mobile */}
+            <button
+              onClick={logout}
+              className="p-2 md:hidden inline-block text-sm cursor-pointer bg-[#f4f4f4] rounded"
+            >
+              Logout
+            </button>
           </div>
           <div className="grid md:grid-cols-3 grid-cols-1 md:gap-2">
             <NoteCard
@@ -324,11 +321,7 @@ export default function Home() {
             }}
             footer={[]}
           >
-            <AddTaskForm
-              addTask={addNewTask}
-              // closeForm={() => setOpenForm(false)}
-              columnStatus={columnStatus}
-            />
+            <AddTaskForm addTask={addNewTask} columnStatus={columnStatus} />
           </Modal>
         </div>
       </div>

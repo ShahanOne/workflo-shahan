@@ -36,16 +36,20 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
           <div className="flex justify-between items-center mb-2">
             <p className="text-lg">{title}</p>
           </div>
-          {tasks.length > 0 ? (
-            tasks.map((task, index) => (
-              <TaskCard key={task._id} {...task} index={index} />
-            ))
-          ) : (
+          {/* skeleton handling */}
+          {tasks === undefined ? (
             <>
               <SkeletonCard />
               <SkeletonCard />
             </>
+          ) : tasks.length > 0 ? (
+            tasks.map((task, index) => (
+              <TaskCard key={task._id} {...task} index={index} />
+            ))
+          ) : (
+            <p>No tasks available.</p>
           )}
+
           {provided.placeholder}
           <AddNewBtn status={status} handleAddTask={handleAddTask} />
         </div>

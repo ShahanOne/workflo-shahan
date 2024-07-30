@@ -8,11 +8,7 @@ interface AddTaskFormProps {
   addTask: (newTask: object) => void;
 }
 
-const AddTaskForm: React.FC<AddTaskFormProps> = ({
-  columnStatus,
-  //   closeForm,
-  addTask,
-}) => {
+const AddTaskForm: React.FC<AddTaskFormProps> = ({ columnStatus, addTask }) => {
   const [title, setTitle] = useState('');
   const [status, setStatus] = useState('');
   const [priority, setPriority] = useState('medium');
