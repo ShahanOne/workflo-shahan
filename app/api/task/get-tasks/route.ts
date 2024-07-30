@@ -25,7 +25,7 @@ export async function POST(req:Request) {
   } catch (error) {
     console.log(error);
     return NextResponse.json(
-      { error: 'An error occurred while fetching user tasks' },
+      { error: error, message:'An error occurred while fetching user tasks'},
       { status: 500 }
     );
   }

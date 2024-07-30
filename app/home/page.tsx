@@ -67,10 +67,6 @@ export default function Home() {
   );
   const finishedTasks = tasks?.filter((task) => task.status === 'finished');
 
-  const openTaskForm = (status: string) => {
-    setColumnStatus(status);
-    setOpenForm(true);
-  };
   const addNewTask = async (newTask: object) => {
     try {
       const res = await fetch('/api/task/create-task', {
@@ -94,6 +90,11 @@ export default function Home() {
     } catch (error) {
       console.error('Error:', error);
     }
+  };
+
+  const openTaskForm = (status: string) => {
+    setColumnStatus(status);
+    setOpenForm(true);
   };
 
   const logout = () => {
