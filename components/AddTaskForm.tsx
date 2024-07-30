@@ -1,22 +1,17 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import {
-  FaHeading,
-  FaTasks,
-  FaExclamationCircle,
-  FaCalendarAlt,
-  FaPen,
-  FaPlus,
-} from 'react-icons/fa';
+
+import Image from 'next/image';
 interface AddTaskFormProps {
   columnStatus: string;
-  closeForm: () => void;
+  addTask: (newTask: object) => void;
 }
 
 const AddTaskForm: React.FC<AddTaskFormProps> = ({
   columnStatus,
-  closeForm,
+  //   closeForm,
+  addTask,
 }) => {
   const [title, setTitle] = useState('');
   const [status, setStatus] = useState('');
@@ -33,7 +28,7 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({
     setStatus(columnStatus);
   }, [columnStatus]);
 
-  const addTask = async (e: React.FormEvent) => {
+  const addNewTask = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userId) {
       toast.error('Please login first');
@@ -48,29 +43,12 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({
       description,
     };
 
-    try {
-      const res = await fetch('/api/task/create-task', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newTask),
-      })
-        .then((res) => res.json())
-        .then((data) =>
-          data.task
-            ? toast.success('Task created successfully')
-            : toast.error('Error creating task')
-        );
-      closeForm();
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    addTask(newTask);
   };
 
   return (
     <div className="text-[#666666] bg-white">
-      <form onSubmit={addTask}>
+      <form onSubmit={addNewTask}>
         <div className="mb-4">
           <input
             type="text"
@@ -83,7 +61,16 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({
         </div>
         <div className="mb-4 flex items-baseline gap-2">
           <label className="flex gap-2 items-center    mb-2">
-            <FaTasks className="inline-block mr-2" /> Status
+            <div>
+              <Image
+                className="cursor-pointer"
+                src={'/status.png'}
+                alt="status"
+                width={25}
+                height={30}
+              />
+            </div>{' '}
+            Status
           </label>
           <select
             value={status}
@@ -102,7 +89,16 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({
         </div>
         <div className="mb-4 flex  items-baseline gap-2">
           <label className="flex gap-2 items-center    mb-2">
-            <FaExclamationCircle className="inline-block mr-2" /> Priority
+            <div>
+              <Image
+                className="cursor-pointer"
+                src={'/priority.png'}
+                alt="priority"
+                width={25}
+                height={30}
+              />
+            </div>{' '}
+            Priority
           </label>
           <select
             value={priority}
@@ -120,7 +116,16 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({
         </div>
         <div className="mb-4 flex items-baseline gap-2">
           <label className="flex gap-2 items-center    mb-2">
-            <FaCalendarAlt className="inline-block mr-2" /> Deadline
+            <div>
+              <Image
+                className="cursor-pointer"
+                src={'/deadline.png'}
+                alt="deadline"
+                width={30}
+                height={30}
+              />
+            </div>{' '}
+            Deadline
           </label>
           <input
             type="date"
@@ -131,8 +136,17 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({
           />
         </div>
         <div className="mb-4 flex items-baseline gap-2">
-          <label className="flex gap-2 items-center    mb-2">
-            <FaPen className="inline-block mr-2" /> Description
+          <label className="flex gap-2 items-center mb-2">
+            <div>
+              <Image
+                className="cursor-pointer"
+                src={'/description.png'}
+                alt="description"
+                width={40}
+                height={40}
+              />
+            </div>{' '}
+            Description
           </label>
           <textarea
             value={description}

@@ -21,7 +21,7 @@ export async function POST(req:Request) {
       return NextResponse.json({ status: 401, message: 'User not found' });
     }
 
-    return NextResponse.json({ status: 200, tasks: foundUser.tasks });
+    return NextResponse.json({ status: 200, user:foundUser,tasks: foundUser.tasks });
   } catch (error) {
     console.log(error);
     return NextResponse.json(

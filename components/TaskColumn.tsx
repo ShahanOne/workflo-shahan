@@ -24,9 +24,9 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
   status,
 }) => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
       <div className="flex justify-between items-center mb-2">
-        <p>{title}</p>
+        <p className="text-lg">{title}</p>
         <div>
           {' '}
           <Image src={'/list.png'} alt="list" width={20} height={20} />

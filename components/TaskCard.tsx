@@ -27,16 +27,16 @@ const TaskCard: React.FC<TaskCardProps> = ({
     priorityColor = '#10cc5a';
   }
   return (
-    <div className="bg-[#f9f9f9] rounded-lg p-2">
+    <div className="bg-[#f9f9f9] border-[#bab9b9] border-[0.5px] rounded-lg px-2 py-3">
       <p className="text-[#6a6a6a] font-semibold">{title}</p>
-      <p className="text-[#797979] my-2 text-sm">{description}</p>
+      <p className="text-[#797979] my-3 text-sm">{description}</p>
       <button
         style={{ backgroundColor: priorityColor }}
         className="rounded-lg px-2 text-white text-sm py-1"
       >
         {priority}
       </button>
-      <div className="text-[#6a6a6a] my-2 font-semibold flex gap-2">
+      <div className="text-[#6a6a6a] text-sm my-3 font-semibold flex gap-2">
         {' '}
         <div className="flex items-center">
           {' '}
@@ -44,7 +44,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
         </div>
         {formatDate(deadline)}
       </div>
-      <p className="text-[#797979] text-sm">1 hr ago</p>
+      <p className="text-[#797979] text-sm">just now</p>
     </div>
   );
 };
