@@ -25,9 +25,6 @@ export async function POST(req: Request) {
 
     const savedUser = await user.save();
     const secret = `${process.env.JWT_SECRET}`;
-    // if (!secret) {
-    //   return NextResponse.json({ status: 401, message: 'Secret not provided' });
-    // }
     const token = jwt.sign(
       { userId: savedUser._id, username: savedUser.username },
       secret,

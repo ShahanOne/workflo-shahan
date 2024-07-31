@@ -50,7 +50,7 @@ const Login = () => {
             dispatch(setUser(data.user));
             router.push('/home');
           } else {
-            toast.error('User not found, please Register or try again');
+            toast.error('User not found, check username/password or register');
           }
         });
     } catch (err) {
