@@ -24,8 +24,6 @@ const Register = () => {
     }
   }, [router, userId]);
 
-  const token = getCookie('token');
-
   const handleRegister = async (
     fullname: string,
     email: string,
@@ -36,6 +34,8 @@ const Register = () => {
       return;
     }
     try {
+      const token = await getCookie('token');
+
       const res = await fetch('/api/user/register', {
         method: 'POST',
         headers: {

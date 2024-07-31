@@ -37,8 +37,6 @@ export default function Home() {
   const router = useRouter();
   let userId: string | null = null;
 
-  const token = getCookie('token'); //jwt token
-
   const dispatch = useDispatch<AppDispatch>();
   const tasks = useSelector((state: RootState) => state.app.tasks);
   // const taskStatus = useSelector((state: RootState) => state.app.status);
@@ -57,6 +55,7 @@ export default function Home() {
 
   const addNewTask = async (newTask: object) => {
     try {
+      const token = await getCookie('token'); //jwt token
       const res = await fetch('/api/task/create-task', {
         method: 'POST',
         headers: {
@@ -83,6 +82,7 @@ export default function Home() {
 
   const updateTask = async (taskId: string, newStatus: string) => {
     try {
+      const token = await getCookie('token'); //jwt token
       const res = await fetch('/api/task/update-status', {
         method: 'POST',
         headers: {

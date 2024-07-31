@@ -24,8 +24,6 @@ const Login = () => {
     }
   }, [router, userId]);
 
-  const token = getCookie('token');
-
   const handleLogin = async (
     fullname: string,
     email: string,
@@ -36,6 +34,7 @@ const Login = () => {
       return;
     }
     try {
+      const token = await getCookie('token');
       const res = await fetch('/api/user/login', {
         method: 'POST',
         headers: {
