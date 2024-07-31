@@ -29,9 +29,9 @@ const initialState: TaskState = {
   error: null,
 };
 
-const token = getCookie('token')
 
 export const fetchData = createAsyncThunk('tasks/fetchData', async (userId: string) => {
+  const token = await getCookie('token')
   const res = await fetch('/api/task/get-tasks', {
     method: 'POST',
     headers: {
