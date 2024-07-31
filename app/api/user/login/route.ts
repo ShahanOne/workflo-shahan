@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { connectDB } from '../../../../utils/db';
 import bcrypt from 'bcrypt';
 import User from '../../../../lib/models/user';
+import jwt from "jsonwebtoken";
+
 let isConnected = false;
 if (!isConnected) {
   connectDB();
@@ -26,8 +28,14 @@ export async function POST(req:Request) {
     if (!isPasswordCorrect) {
       return NextResponse.json({ status: 401, message: 'Incorrect password' });
     }
+    const token = jwt.sign(
+						{ userId: foundUser._id, username: foundUser.username },
+						process.env.JWT_SECRET,
+						{ expiresIn: "24h" }
+					);
 
-    return NextResponse.json({ status: 200, user: foundUser });
+
+    return NextResponse.json({ status: 200, user: foundUser,token });
   } catch (error) {
     console.log(error);
     return NextResponse.json({

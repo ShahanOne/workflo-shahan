@@ -1,3 +1,4 @@
+import getCookie from '@/lib/functions/getCookie';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
 interface Task {
@@ -28,11 +29,14 @@ const initialState: TaskState = {
   error: null,
 };
 
+const token = getCookie('token')
+
 export const fetchData = createAsyncThunk('tasks/fetchData', async (userId: string) => {
   const res = await fetch('/api/task/get-tasks', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ userId }),
   });

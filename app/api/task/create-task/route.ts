@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { connectDB } from '../../../../utils/db';
 import Task from '../../../../lib/models/task';
 import User from '../../../../lib/models/user';
-
+import checkUser from '@/lib/functions/checkUser';
 let isConnected = false;
 if (!isConnected) {
   connectDB();
@@ -12,9 +12,19 @@ if (!isConnected) {
 export async function POST(req: Request) {
   const body = await req.json();
   const { userId, title, status, priority, deadline, description } = body;
-  
-  try {
 
+  const headers = req.headers; 
+  const authHeader = headers.get('authorization');
+   
+  let user = null;
+
+  try {
+    user = await checkUser(authHeader);
+  } catch (err) {
+    return NextResponse.json({ status: 401, error: "User not logged in" });
+  }
+
+  try {
     const newTask = new Task({
       title,
       status,

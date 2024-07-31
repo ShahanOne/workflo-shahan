@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
+import getCookie from '@/lib/functions/getCookie';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -36,26 +37,23 @@ export default function Home() {
   const router = useRouter();
   let userId: string | null = null;
 
-  if (typeof window !== 'undefined') {
-    userId = localStorage.getItem('__uid');
-  }
-
-  useEffect(() => {
-    if (!userId) {
-      router.push('/register');
-    }
-  }, [router, userId]);
+  const token = getCookie('token'); //jwt token
 
   const dispatch = useDispatch<AppDispatch>();
   const tasks = useSelector((state: RootState) => state.app.tasks);
-  const taskStatus = useSelector((state: RootState) => state.app.status);
+  // const taskStatus = useSelector((state: RootState) => state.app.status);
   const user = useSelector((state: RootState) => state.app.user);
 
   useEffect(() => {
-    if (taskStatus === 'idle' && userId) {
-      dispatch(fetchData(userId));
+    if (typeof window !== 'undefined') {
+      userId = localStorage.getItem('__uid');
+      if (!userId) {
+        router.push('/register');
+      } else {
+        dispatch(fetchData(userId));
+      }
     }
-  }, [taskStatus, dispatch]);
+  }, [dispatch, userId]);
 
   const addNewTask = async (newTask: object) => {
     try {
@@ -63,6 +61,7 @@ export default function Home() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(newTask),
       })
@@ -88,6 +87,7 @@ export default function Home() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           taskId,
@@ -141,7 +141,7 @@ export default function Home() {
 
     const finalTasks = updatedTasks.map((task) =>
       task.status === destination.droppableId
-        ? tasksInColumn.find((t) => t._id === task._id) || task
+        ? tasksInColumn.find((t) => t?._id === task?._id) || task
         : task
     );
 
@@ -162,6 +162,7 @@ export default function Home() {
   const logout = () => {
     dispatch(clearUser());
     localStorage.removeItem('__uid');
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
     router.push('/login');
   };
 
@@ -212,9 +213,9 @@ export default function Home() {
                     status.replace('-', ' ').slice(1)
                   }
                   tasks={
-                    tasks[0]?.title === 'fetching' //for skeleton presentation while fetching
+                    tasks && tasks[0]?.title === 'fetching' //for skeleton presentation while fetching
                       ? tasks
-                      : tasks.filter((task) => task.status === status)
+                      : tasks?.filter((task) => task.status === status)
                   }
                   status={status}
                 />

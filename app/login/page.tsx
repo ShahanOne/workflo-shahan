@@ -1,5 +1,7 @@
 'use client';
 import AuthForm from '@/components/AuthForm';
+import getCookie from '@/lib/functions/getCookie';
+import setCookie from '@/lib/functions/setCookie';
 import { setUser } from '@/redux/slices/appSlice';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
@@ -22,6 +24,8 @@ const Login = () => {
     }
   }, [router, userId]);
 
+  const token = getCookie('token');
+
   const handleLogin = async (
     fullname: string,
     email: string,
@@ -36,6 +40,7 @@ const Login = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify([{ email, password }]),
       })
@@ -44,6 +49,8 @@ const Login = () => {
           if (data?.user) {
             typeof window !== 'undefined' &&
               localStorage.setItem('__uid', data.user._id);
+            setCookie('token', data.token, 10);
+
             dispatch(setUser(data.user));
             router.push('/home');
           } else {

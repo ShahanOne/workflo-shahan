@@ -37,12 +37,12 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
             <p className="text-lg">{title}</p>
           </div>
 
-          {tasks[0]?.title === 'fetching' ? (
+          {tasks && tasks[0]?.title === 'fetching' ? (
             <>
               <SkeletonCard />
               <SkeletonCard />
             </>
-          ) : tasks.length > 0 ? (
+          ) : tasks?.length > 0 ? (
             tasks.map((task, index) => (
               <TaskCard key={task._id} {...task} index={index} />
             ))

@@ -1,11 +1,12 @@
 'use client';
 import AuthForm from '@/components/AuthForm';
+import getCookie from '@/lib/functions/getCookie';
 import { setUser } from '@/redux/slices/appSlice';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-
+import setCookie from '@/lib/functions/setCookie';
 const Register = () => {
   const router = useRouter();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -23,6 +24,8 @@ const Register = () => {
     }
   }, [router, userId]);
 
+  const token = getCookie('token');
+
   const handleRegister = async (
     fullname: string,
     email: string,
@@ -37,6 +40,7 @@ const Register = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify([{ username: fullname, email, password }]),
       })
@@ -45,6 +49,7 @@ const Register = () => {
           if (data?.user) {
             typeof window !== 'undefined' &&
               localStorage.setItem('__uid', data.user._id);
+            setCookie('token', data.token, 10);
             dispatch(setUser(data.user));
 
             router.push('/home');
