@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     if (!isPasswordCorrect) {
       return NextResponse.json({ status: 401, message: 'Incorrect password' });
     }
-    const secret = process.env.JWT_SECRET;
+    const secret = `${process.env.JWT_SECRET}`;
     // if (!secret) {
     //   return NextResponse.json({ status: 401, message: 'Secret not provided' });
     // }
