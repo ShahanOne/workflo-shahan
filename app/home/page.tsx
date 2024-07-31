@@ -1,7 +1,6 @@
 'use client';
 import AddTaskForm from '@/components/AddTaskForm';
 import Navbar from '@/components/Navbar';
-import NoteCard from '@/components/NoteCard';
 import TaskColumn from '@/components/TaskColumn';
 import { Modal } from 'antd';
 import Image from 'next/image';
@@ -18,14 +17,16 @@ import {
   clearUser,
 } from '@/redux/slices/appSlice';
 import { AppDispatch, RootState } from '@/redux/store';
+import ButtonsSection from '@/components/ButtonsSection';
+import NotesSection from '@/components/NotesSection';
 
 interface Task {
   _id: string;
   title: string;
-  description: string;
+  description?: string;
   status: 'to-do' | 'in-progress' | 'under-review' | 'finished';
-  priority: 'urgent' | 'medium' | 'low';
-  deadline: Date;
+  priority?: 'urgent' | 'medium' | 'low';
+  deadline?: Date;
 }
 
 export default function Home() {
@@ -199,102 +200,8 @@ export default function Home() {
               Logout
             </button>
           </div>
-          <div className="grid md:grid-cols-3 grid-cols-1 md:gap-2">
-            <NoteCard
-              title={'Introducing tags'}
-              content={
-                'Easily categorize and find your notes by adding tags. Keep your workspace clutter-free and efficient.'
-              }
-              icon={'/1.png'}
-            />
-            <NoteCard
-              title={'Share Notes Instantly'}
-              content={
-                'Effortlessly share your notes with others via email or link. Enhance collaboration with quick sharing options.'
-              }
-              icon={'/2.png'}
-            />
-            <NoteCard
-              title={'Access Anywhere'}
-              content={
-                "Sync your notes across all devices. Stay productive whether you're on your phone, tablet, or computer."
-              }
-              icon={'/3.png'}
-            />
-          </div>
-          <div className="flex md:flex-row flex-col justify-between text-sm items-center gap-4 py-4">
-            <div className="flex items-center border rounded-lg bg-white px-2 py-1">
-              <input
-                type="text"
-                placeholder="Search"
-                className="border-none outline-none w-full"
-              />
-              <>
-                <Image
-                  src={'/search.png'}
-                  alt="search"
-                  className="cursor-pointer"
-                  width={20}
-                  height={20}
-                />
-              </>
-            </div>
-            <div className="flex gap-4 ">
-              <button className="flex items-center cursor-pointer gap-2  rounded px-2 py-1 bg-[#f4f4f4]">
-                Calendar view{' '}
-                <>
-                  <Image
-                    src={'/calendar.png'}
-                    alt="calendar"
-                    width={20}
-                    height={20}
-                  />
-                </>
-              </button>
-              <button className="flex items-center cursor-pointer gap-2  rounded px-2 py-1 bg-[#f4f4f4]">
-                Automation{' '}
-                <>
-                  <Image
-                    src={'/star.png'}
-                    alt="automation"
-                    width={20}
-                    height={20}
-                  />
-                </>
-              </button>
-              <button className="flex items-center cursor-pointer gap-2  rounded px-2 py-1 bg-[#f4f4f4]">
-                Filter{' '}
-                <>
-                  <Image
-                    src={'/filter.png'}
-                    alt="filter"
-                    width={20}
-                    height={20}
-                  />
-                </>
-              </button>
-              <button className="flex items-center cursor-pointer gap-2  rounded px-2 py-1 bg-[#f4f4f4]">
-                Share{' '}
-                <>
-                  <Image
-                    src={'/share.png'}
-                    alt="share"
-                    width={20}
-                    height={20}
-                  />
-                </>
-              </button>
-              <button
-                onClick={() => setOpenForm(true)}
-                className="bg-gradient-to-b md:inline-block hidden from-[#4C38C2] to-[#2F2188] text-white px-2 py-1 rounded-lg shadow-sm shadow-[#4C38C2] transition duration-300"
-              >
-                Create new
-                <span className="bg-white text-[#4C38C2] rounded-full mx-1 px-[0.25rem]">
-                  +
-                </span>
-              </button>
-            </div>
-          </div>
+          <NotesSection />
+          <ButtonsSection openForm={() => setOpenForm(true)} />
           <div className="tasks_div bg-[#ffffff] min-h-[30rem] rounded-lg grid md:grid-cols-4 grid-cols-1 gap-2 p-2">
             {['to-do', 'in-progress', 'under-review', 'finished'].map(
               (status, index) => (
@@ -305,7 +212,11 @@ export default function Home() {
                     status.charAt(0).toUpperCase() +
                     status.replace('-', ' ').slice(1)
                   }
-                  tasks={tasks.filter((task) => task.status === status)}
+                  tasks={
+                    tasks[0]?.title === 'fetching' //for skeleton presentation while fetching
+                      ? tasks
+                      : tasks.filter((task) => task.status === status)
+                  }
                   status={status}
                 />
               )

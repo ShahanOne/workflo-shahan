@@ -13,10 +13,10 @@ interface TaskColumnProps {
 interface Task {
   _id: string;
   title: string;
-  description: string;
+  description?: string;
   status: 'to-do' | 'in-progress' | 'under-review' | 'finished';
-  priority: 'urgent' | 'medium' | 'low';
-  deadline: Date;
+  priority?: 'urgent' | 'medium' | 'low';
+  deadline?: Date;
 }
 
 const TaskColumn: React.FC<TaskColumnProps> = ({
@@ -36,8 +36,8 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
           <div className="flex justify-between items-center mb-2">
             <p className="text-lg">{title}</p>
           </div>
-          {/* skeleton handling */}
-          {tasks === undefined ? (
+
+          {tasks[0]?.title === 'fetching' ? (
             <>
               <SkeletonCard />
               <SkeletonCard />
@@ -47,7 +47,7 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
               <TaskCard key={task._id} {...task} index={index} />
             ))
           ) : (
-            <p>No tasks available.</p>
+            <p className="text-sm italic">no tasks available</p>
           )}
 
           {provided.placeholder}

@@ -6,9 +6,9 @@ interface TaskCardProps {
   _id: string;
   title: string;
   status: string;
-  priority: 'urgent' | 'medium' | 'low';
-  deadline: Date;
-  description: string;
+  priority?: 'urgent' | 'medium' | 'low';
+  deadline?: Date;
+  description?: string;
   index: number;
 }
 

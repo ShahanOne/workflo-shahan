@@ -3,10 +3,10 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 interface Task {
   _id: string;
   title: string;
-  description: string;
+  description?: string;
   status: 'to-do' | 'in-progress' | 'under-review' | 'finished';
-  priority: 'urgent' | 'medium' | 'low';
-  deadline: Date;
+  priority?: 'urgent' | 'medium' | 'low';
+  deadline?: Date;
 }
 interface User {
   _id: string;
@@ -22,7 +22,7 @@ interface TaskState {
 }
 
 const initialState: TaskState = {
-  tasks: [],
+  tasks: [{_id:'no',title:'fetching',status:'to-do'}], //dummy for skeleton
   user:null,
   status: 'idle',
   error: null,
@@ -60,7 +60,7 @@ const appSlice = createSlice({
     setUser:(state,action)=>{
       state.user =action.payload
     },
-      clearUser: (state) => {
+    clearUser: (state) => {
       state.user = null;
       state.tasks= []
     },
