@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 
-const Register = () => {
+const HomePage = () => {
   const router = useRouter();
   let userId: string | null = null;
 
@@ -24,4 +24,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default HomePage;

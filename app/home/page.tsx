@@ -52,7 +52,6 @@ export default function Home() {
   const user = useSelector((state: RootState) => state.app.user);
 
   useEffect(() => {
-    const userId = localStorage.getItem('__uid');
     if (taskStatus === 'idle' && userId) {
       dispatch(fetchData(userId));
     }
