@@ -1,6 +1,5 @@
 'use client';
 import AuthForm from '@/components/AuthForm';
-import getCookie from '@/lib/functions/getCookie';
 import setCookie from '@/lib/functions/setCookie';
 import { setUser } from '@/redux/slices/appSlice';
 import { useRouter } from 'next/navigation';
@@ -34,12 +33,10 @@ const Login = () => {
       return;
     }
     try {
-      const token = await getCookie('token');
       const res = await fetch('/api/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify([{ email, password }]),
       })

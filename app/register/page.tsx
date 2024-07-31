@@ -1,6 +1,5 @@
 'use client';
 import AuthForm from '@/components/AuthForm';
-import getCookie from '@/lib/functions/getCookie';
 import { setUser } from '@/redux/slices/appSlice';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
@@ -34,13 +33,10 @@ const Register = () => {
       return;
     }
     try {
-      const token = await getCookie('token');
-
       const res = await fetch('/api/user/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify([{ username: fullname, email, password }]),
       })
