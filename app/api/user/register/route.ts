@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import { connectDB } from '../../../../utils/db';
 import User from '../../../../lib/models/user';
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 
 let isConnected = false;
 if (!isConnected) {
@@ -10,7 +10,7 @@ if (!isConnected) {
   isConnected = true;
 }
 
-export async function POST(req:Request) {
+export async function POST(req: Request) {
   const body = await req.json();
   const { username, email, password } = body[0];
   const saltRounds = 10;
@@ -24,15 +24,15 @@ export async function POST(req:Request) {
     });
 
     const savedUser = await user.save();
-     const secret = process.env.JWT_SECRET
-    if (!secret){
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
       return NextResponse.json({ status: 401, message: 'Secret not provided' });
     }
-        const token = jwt.sign(
-						{ userId: savedUser._id, username: savedUser.username },
-						secret,
-						{ expiresIn: "24h" }
-					);
+    const token = jwt.sign(
+      { userId: savedUser._id, username: savedUser.username },
+      secret,
+      { expiresIn: '24h' }
+    );
     return NextResponse.json({
       status: 200,
       token,
